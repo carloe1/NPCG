@@ -1,0 +1,33 @@
+<!DOCTYPE html>
+<link rel="stylesheet" href="NPCG/CSS/index.css" type="text/css">
+<html>
+	<head>
+		<script src='https://www.google.com/recaptcha/api.js'></script>
+		<meta charset="ISO-8859-1">
+		<title>NPC Generator</title>
+	</head>
+	
+	<body>
+		<div class="page">
+		<div class="container">
+			<h1>NPC Generator</h1>
+			<a>*NOTE*</a><br> 
+			<a>Every entry is optional. Fill in if you want any specifics.</a><br>
+			<a>You'll also be able to change the PDF once it's downloaded.</a><br><br>
+			
+			<form action="/NPCG/Generate" METHOD="POST">
+				<INPUT TYPE="TEXT" PLACEHOLDER="Investigator Name" NAME="Investigator_Name"><br>
+				<INPUT TYPE="TEXT" PLACEHOLDER="Player Name" NAME="Player_Name"><br>
+				<INPUT TYPE="TEXT" PLACEHOLDER="Occupation" NAME="Occupation"><br>
+				<INPUT TYPE="TEXT" PLACEHOLDER="Residence" NAME="Residence"><br>
+				<INPUT TYPE="TEXT" PLACEHOLDER="Birthplace" NAME="Birthplace"><br>
+				<INPUT TYPE="TEXT" PLACEHOLDER="Age" NAME="Age"><br>
+				<INPUT TYPE="TEXT" PLACEHOLDER="Sex" NAME="Sex"><br>
+				<div class="g-recaptcha" data-sitekey="6LdrFEgUAAAAAFEaFwTP40pT7oUlejbCU4czhCRS"></div><BR>
+				<INPUT TYPE="SUBMIT" VALUE="Generate">
+			</form>
+			
+		</div> <!-- class="container"-->
+		</div> <!-- class="page" -->
+	</body>
+</html>
