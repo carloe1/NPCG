@@ -3,22 +3,31 @@ package npcg;
 import java.io.IOException;
 import java.io.OutputStream;
 import java.io.PrintWriter;
+import java.sql.Connection;
+import java.sql.DriverManager;
+import java.sql.ResultSet;
+import java.sql.Statement;
+import java.util.ArrayList;
 import java.util.Iterator;
 import java.util.Map;
 import java.util.Map.Entry;
 import java.util.Random;
+import java.util.UUID;
 
+import javax.servlet.RequestDispatcher;
 import javax.servlet.ServletException;
 import javax.servlet.annotation.WebServlet;
 import javax.servlet.http.HttpServlet;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
+import javax.servlet.http.HttpSession;
 
 import com.itextpdf.kernel.pdf.PdfDocument;
 import com.itextpdf.kernel.pdf.PdfReader;
 import com.itextpdf.kernel.pdf.PdfWriter;
 import com.itextpdf.layout.Document;
 import com.itextpdf.layout.element.Paragraph;
+
 import com.itextpdf.forms.PdfAcroForm;
 import com.itextpdf.forms.fields.PdfFormField;
 
@@ -38,8 +47,14 @@ public class Generate extends HttpServlet {
 	
 	private static final String SRC  = "PDF/";
 	private static final String NPCTEMPLATE = "CoC-M-7E.pdf";
-	private static final String DEST = "C:\\Users\\carlo\\Desktop\\";
-       
+      
+	public void checkIfNull(String value) {
+		if (value == null) {
+			value = "";
+		}
+	}
+	
+	
     /**
      * @see HttpServlet#HttpServlet()
      */
@@ -66,6 +81,8 @@ public class Generate extends HttpServlet {
         }
         */
 		
+		_die die = new _die();
+		
 		// Get User Submitted Parameter
 		String name = request.getParameter("Investigator_Name");
 		String player = request.getParameter("Player_Name");
@@ -74,14 +91,27 @@ public class Generate extends HttpServlet {
 		String birthplace = request.getParameter("Birthplace");
 		String age = request.getParameter("Age");
 		String sex = request.getParameter("Sex");
-
+		
+		this.checkIfNull(name);
+		this.checkIfNull(player);
+		this.checkIfNull(occupation);
+		this.checkIfNull(residence);
+		this.checkIfNull(birthplace);
+		this.checkIfNull(sex);
+		
+		if (age == null) {
+			age = "" + (die.roll(75) + 14);
+		}
+		
 		// Get the path of the source pdf file that we will be filling out 
 		String source = getServletContext().getRealPath(SRC);
 		String PDFpath = source + NPCTEMPLATE;
 		
 		// Get the path of the destination pdf file, the generated NPC
+		String DEST = request.getServletContext().getRealPath("/") + "PDF/";
 		String ID = String.format("%06d", (int) (Math.random() * 100000));
 		String GeneratedPDF = DEST + ID + "_" +name + ".pdf";
+		System.out.println(GeneratedPDF);
 		
 		PdfDocument pdf = new PdfDocument(new PdfReader(PDFpath), new PdfWriter(GeneratedPDF));
 		PdfAcroForm form = PdfAcroForm.getAcroForm(pdf, true);
@@ -99,16 +129,19 @@ public class Generate extends HttpServlet {
 		// Generate Characteristics
 		_characteristics.GenerateCharacteristics(fields);
 		
-		// Generate Health and Sanity
-		_health.GenerateHealth(fields);
-		
 		// Close the PDF
-		pdf.close();
+		pdf.close();		
 		
+		// Redirect To the Home Page if Success
+		request.setAttribute("NPC_NAME", name);
+		request.setAttribute("NPC", GeneratedPDF);
+		RequestDispatcher dispatch = request.getRequestDispatcher("NPC.jsp");
+		dispatch.forward(request, response);
+		
+		/*
 		// File Download
         response.setContentType("application/pdf");
         response.setHeader("Content-disposition","attachment; " + GeneratedPDF);
-        
         
         File my_file = new File(GeneratedPDF);
 
@@ -122,8 +155,29 @@ public class Generate extends HttpServlet {
         }
         in.close();
         out.flush();
-        
-
+        */
+		
+		/*
+		try{
+			// Incorporate MySQL driver
+			Class.forName("com.mysql.jdbc.Driver").newInstance();
+			Connection connection = DriverManager.getConnection(MovieDB.loginURL, MovieDB.loginUser, MovieDB.loginPassword);
+			Statement select = connection.createStatement();
+			ResultSet movie = select.executeQuery(query);
+			
+			// Insert the NPC into the DB
+			movieID 	= UUID.randomUUID().toString().replaceAll("-", "").substring(0, 10);
+			String insertStatement = String.format("INSERT INTO movies VALUES ('%s', '%s', %d, '%s')", movieID, title, year, director);
+			int insertSuccess = select.executeUpdate(insertStatement);
+			if (insertSuccess == 1){
+				finalMessage += String.format("Movie(%s, %s, %d, %s) added to movies table<br>",movieID, title, year, director);
+			}
+		}
+		catch(Exception e){
+			e.printStackTrace();
+		}
+		*/
+		
 	}
 
 	/**
