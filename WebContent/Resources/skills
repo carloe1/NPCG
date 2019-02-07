@@ -1,74 +1,59 @@
-Skill_Anthropology
-Skill_Appraise
-Skill_Archaeology
-Skill_ArtCraft1
-Skill_ArtCraft2
-Skill_ArtCraft3
-Skill_Charm
-Skill_Climb
-Skill_CreditRating
-Skill_CthulhuMythos
-Skill_Disguise
-Skill_Dodge
-Skill_DriveAuto
-Skill_ElecRepair
-Skill_FastTalk
-Skill_FightingBrawl
-Skill_Fighting1
-Skill_Fighting2
-Skill_FirearmsHandgun
-Skill_FirearmsRifle
-Skill_Firearms1
-Skill_FirstAid
-Skill_History
-Skill_Intimidate
-Skill_Jump
-Skill_LanguageOther1
-Skill_LanguageOther2
-Skill_Law
-Skill_LibraryUse
-Skill_Listen
-Skill_Locksmith
-Skill_MechRepair
-Skill_Medicine
-Skill_NaturalWorld
-Skill_Navigate
-Skill_Occult
-Skill_OpHvMachine
-Skill_Persuade
-Skill_Pilot1
-Skill_Psychology
-Skill_Psychoanalysis
-Skill_Science1
-Skill_Science2
-Skill_Science3
-Skill_SleightOfHand
-Skill_SpotHidden
-Skill_Stealth
-Skill_Swim
-Skill_Throw
-Skill_Track
-Skill_Custom1
-Skill_Custom2
-Skill_Custom3
-Skill_Custom4
-Skill_Custom5
-Skill_Accounting
-SkillDef_ArtCraft2
-SkillDef_ArtCraft1
-SkillDef_Fighting1
-SkillDef_Fighting2
-SkillDef_Firearms1
-SkillDef_LanguageOther2
-SkillDef_LanguageOwn
-SkillDef_LanguageOther1
-SkillDef_Pilot1
-SkillDef_Science2
-SkillDef_Science1
-SkillDef_Science3
-SkillDef_Survival1
-SkillDef_Custom5
-SkillDef_Custom4
-SkillDef_Custom3
-SkillDef_Custom2
-SkillDef_Custom1
+Skill_Accounting	5
+Skill_Anthropology 	1
+Skill_Appraise	5
+Skill_Archaeology	1
+Skill_ArtCraft1	5
+Skill_ArtCraft2	0
+Skill_ArtCraft3	0
+Skill_Charm	15
+Skill_Climb	20
+Skill_ComputerUse 	5
+Skill_CreditRating	0
+Skill_CthulhuMythos	0
+Skill_Disguise	5
+Skill_Dodge	0
+Skill_DriveAuto	20
+Skill_ElecRepair	10
+Skill_Electronics	1
+Skill_FastTalk	5
+Skill_FightingBrawl	25
+Skill_Fighting1	0
+Skill_Fighting2	0
+Skill_FirearmsHandgun	20
+Skill_FirearmsRifle	25
+Skill_Firearms1	0
+Skill_FirstAid	30
+Skill_History	5
+Skill_Intimidate	15
+Skill_Jump	20
+Skill_LanguageOther1	1
+Skill_LanguageOther2	1
+Skill_Law	5
+Skill_LibraryUse	20
+Skill_Listen	25
+Skill_Locksmith	1
+Skill_MechRepair	10
+Skill_Medicine	1
+Skill_NaturalWorld	10
+Skill_Navigate	10
+Skill_Occult	5
+Skill_OpHvMachine	1
+Skill_Persuade	10
+Skill_Pilot1	1
+Skill_Psychology	10
+Skill_Psychoanalysis	1
+Skill_Science1	1
+Skill_Science2	1
+Skill_Science3	1
+Skill_Survival1 10
+Skill_SleightOfHand	10
+Skill_SpotHidden	25
+Skill_Stealth	20
+Skill_Swim	20
+Skill_Throw	20
+Skill_Track	10
+Skill_Custom1	0
+Skill_Custom2	0
+Skill_Custom3	0
+Skill_Custom4	0
+Skill_Custom5	0

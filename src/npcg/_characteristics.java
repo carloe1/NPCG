@@ -1,6 +1,18 @@
 package npcg;
 
+import java.io.BufferedReader;
+import java.io.File;
+import java.io.FileNotFoundException;
+import java.io.FileReader;
+import java.lang.reflect.Array;
+import java.util.ArrayList;
+import java.util.Arrays;
+import java.util.Collections;
+import java.util.HashMap;
+import java.util.LinkedHashMap;
 import java.util.Map;
+import java.util.Random;
+import java.util.Scanner;
 
 import com.itextpdf.forms.fields.PdfFormField;
 
@@ -34,7 +46,53 @@ public class _characteristics {
 		return max;
 	}
 	
-	static void GenerateCharacteristics(Map<String, PdfFormField> fields) {
+	static boolean contains(int[] array, int value) {
+		for (int i: array) {
+			if (value == i) {
+				return true;
+			}
+		}
+		
+		return false;
+	}
+	
+	static int[] getSkillIndexes(int total_skill, int num_skills) {
+		int[] indexes = new int[num_skills];
+		
+		ArrayList<Integer> list = new ArrayList<Integer>();
+		for (int i=0; i < total_skill; i++) {
+			list.add(i);
+		}
+		
+		Collections.shuffle(list);
+		for (int i=0; i < num_skills; i++) {
+			indexes[i] = list.get(i);
+		}
+		
+		return indexes;
+	}
+	
+	static double[] divideUniformlyRandomly(double number, int part) {
+	    double uniformRandoms[] = new double[part];
+	    Random random = new Random();
+
+	    double mean = number / part;
+	    double sum = 0.0;
+
+	    for (int i=0; i<part / 2; i++) {
+	        uniformRandoms[i] = random.nextDouble() * mean;
+
+	        uniformRandoms[part - i - 1] = mean + random.nextDouble() * mean;
+
+	        sum += uniformRandoms[i] + uniformRandoms[part - i -1];
+	    }
+	    uniformRandoms[(int)Math.ceil(part/2)] = uniformRandoms[(int)Math.ceil(part/2)] + number - sum;
+
+	    return uniformRandoms;
+	}
+	
+
+	static void GenerateCharacteristics(Map<String, PdfFormField> fields, String resources_path) {
 		
 		String[] c3d6 = {"STR", "CON", "DEX", "APP", "POW"};
 		String[] c2d6 = {"SIZ", "INT", "EDU"};
@@ -106,7 +164,52 @@ public class _characteristics {
 		
 		// SKILLS ==========================================================================================
 		int skill_points = (maxValue * 4) + (inte * 2);
-		int total_skills = die.nroll(1, 5) + 8;
+		int total_skills = die.nroll(1, 5) + 10;
+		double[] skills = divideUniformlyRandomly(skill_points, total_skills);
+		Map<String, Integer> map = new LinkedHashMap<String, Integer>();
+		
+		try {
+			Scanner scan = new Scanner(new File(resources_path + "/skills"));
+			String[] line;
+			while(scan.hasNextLine()) {
+				line = scan.nextLine().split("\\s+");
+				map.put(line[0], Integer.parseInt(line[1]));
+			}
+			
+			int cur_index = 0;
+			int skill_index = 0;
+			int skill_num = map.size();
+			int[] skill_indexes = _characteristics.getSkillIndexes(skill_num, total_skills);
+			Arrays.sort(skill_indexes);
+			
+			//System.out.println("Total Skills Points: " + skill_points);
+			//System.out.println("Total Skills: " + total_skills);
+			//for (int i=0; i < total_skills; i++) {
+			//	System.out.println(String.format("%f / %d", skills[i], skill_indexes[i]));
+			//}
+			
+			
+			for (Map.Entry<String, Integer> entry : map.entrySet()) {
+				String skill = entry.getKey(); 
+				int value = entry.getValue();
+				if (skill_index < total_skills && skill_indexes[skill_index] == cur_index) {
+					value += (int) skills[skill_index];
+					skill_index++;
+				}
+				
+				//System.out.println(skill + " / "  + value);
+				fields.get(skill).setValue("" + value);
+				cur_index++;
+			}
+			
+			
+		} catch (FileNotFoundException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		} catch (Exception e) {
+			e.printStackTrace();
+		}
+		
 	}
 	
 }

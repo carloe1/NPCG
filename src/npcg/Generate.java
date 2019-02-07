@@ -111,7 +111,6 @@ public class Generate extends HttpServlet {
 		String DEST = request.getServletContext().getRealPath("/") + "PDF/";
 		String ID = String.format("%06d", (int) (Math.random() * 100000));
 		String GeneratedPDF = DEST + ID + "_" +name + ".pdf";
-		System.out.println(GeneratedPDF);
 		
 		PdfDocument pdf = new PdfDocument(new PdfReader(PDFpath), new PdfWriter(GeneratedPDF));
 		PdfAcroForm form = PdfAcroForm.getAcroForm(pdf, true);
@@ -127,35 +126,22 @@ public class Generate extends HttpServlet {
 		fields.get("Sex").setValue(sex);
 		
 		// Generate Characteristics
-		_characteristics.GenerateCharacteristics(fields);
+		String resources = getServletContext().getRealPath("Resources");
+		_characteristics.GenerateCharacteristics(fields, resources);
 		
 		// Close the PDF
 		pdf.close();		
 		
+		//String GeneratedPDF = DEST + ID + "_" +name + ".pdf";
 		// Redirect To the Home Page if Success
+		System.out.println(name);
+		System.out.println(GeneratedPDF);
 		request.setAttribute("NPC_NAME", name);
-		request.setAttribute("NPC", GeneratedPDF);
+		request.setAttribute("NPC", ID + "_" + name);
 		RequestDispatcher dispatch = request.getRequestDispatcher("NPC.jsp");
 		dispatch.forward(request, response);
 		
-		/*
-		// File Download
-        response.setContentType("application/pdf");
-        response.setHeader("Content-disposition","attachment; " + GeneratedPDF);
-        
-        File my_file = new File(GeneratedPDF);
-
-        // This should send the file to browser
-        OutputStream out = response.getOutputStream();
-        FileInputStream in = new FileInputStream(my_file);
-        byte[] buffer = new byte[4096];
-        int length;
-        while ((length = in.read(buffer)) > 0){
-           out.write(buffer, 0, length);
-        }
-        in.close();
-        out.flush();
-        */
+		
 		
 		/*
 		try{
